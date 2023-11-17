@@ -150,8 +150,8 @@ class MainActivity : AppCompatActivity() {
         FileLogger.init(this)
 
         val cal: Calendar = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 19) // set hour
-        cal.set(Calendar.MINUTE, 14) // set minute
+        cal.set(Calendar.HOUR_OF_DAY, 12) // set hour
+        cal.set(Calendar.MINUTE, 0) // set minute
 
         val intent = Intent(this, AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_MUTABLE)

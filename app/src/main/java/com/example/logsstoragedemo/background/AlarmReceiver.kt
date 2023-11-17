@@ -40,7 +40,7 @@ class AlarmReceiver : BroadcastReceiver() {
             val coroutineCallLogger = CoroutineScope(Dispatchers.IO)
             coroutineCallLogger.launch {
                 async {
-                    val file = File(ctx?.filesDir, "${APP_NAME}_USERID_${System.currentTimeMillis()}.txt")
+                    val file = File(ctx?.filesDir, "${APP_NAME}_USERID_${System.currentTimeMillis()}.zip")
                     if (file.exists()) {
                         file.delete()
                     }
@@ -89,7 +89,7 @@ class AlarmReceiver : BroadcastReceiver() {
             file.appendText(stringBuilderDefault.toString())
 
             // compress file
-            //compressFile(file, context)
+            compressFile(file, context)
 
             // clear logs from logcat
             FileLogger.clearLogs()
