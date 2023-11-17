@@ -20,7 +20,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.util.Calendar
+import java.util.zip.GZIPOutputStream
 
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -85,6 +88,9 @@ class AlarmReceiver : BroadcastReceiver() {
             stringBuilderDefault.append(stringBuilderLog)
             file.appendText(stringBuilderDefault.toString())
 
+            // compress file
+            //compressFile(file, context)
+
             // clear logs from logcat
             FileLogger.clearLogs()
             Log.e(TAG, "Clear logs from logcat")
@@ -107,6 +113,28 @@ class AlarmReceiver : BroadcastReceiver() {
 
                 WorkManagerScheduler.triggerScheduledWork(context)
             }
+        }
+    }
+
+    private fun compressFile(file: File, ctx: Context){
+        val fIn: FileInputStream = FileInputStream(file.absolutePath)
+        val compressFile = File(ctx.filesDir, "${APP_NAME}_USERID_${System.currentTimeMillis()}.zip")
+        val fOut: FileOutputStream = FileOutputStream(compressFile.absolutePath)
+        val gZip = GZIPOutputStream(fOut)
+        val buf = ByteArray(1024)
+        var readCount = fIn.read(buf)
+        while (readCount > 0) {
+            gZip.write(buf, 0, readCount)
+            readCount = fIn.read(buf)
+        }
+        gZip.finish()
+        gZip.close()
+        fIn.close()
+
+        // delete text logs files in local storage
+        if (file.exists()) {
+            file.delete()
+            Log.e(TAG, "Delete text file from Local Storage")
         }
     }
 

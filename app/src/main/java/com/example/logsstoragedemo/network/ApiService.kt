@@ -10,7 +10,7 @@ import retrofit2.http.Part
 interface ApiService {
     @Multipart
     @POST("uploadImage")
-    suspend fun uploadImage(
+    suspend fun uploadFile(
         @Part file: MultipartBody.Part?
     ): Response<FileRes>
 

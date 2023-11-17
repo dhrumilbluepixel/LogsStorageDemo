@@ -5,7 +5,6 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Environment
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.logsstoragedemo.background.AlarmReceiver
@@ -27,7 +26,7 @@ object FileLogger {
 
     fun init(activity: Activity) {
         val view = activity.window.decorView.rootView
-        var filePreviewer = FilePreviewer(activity)
+        val filePreviewer = FilePreviewer(activity)
         if (!controlViewAttached) {
             controlViewAttached = true
             filePreviewer.initFilePreviewer(view)
@@ -69,7 +68,7 @@ object FileLogger {
     private suspend fun uploadFile(file: File, uploadFileReq: FileReq, ctx: Context) {
         try {
             val apiService = ApiClient.getApiService()
-            val response = apiService.uploadImage(uploadFileReq.file)
+            val response = apiService.uploadFile(uploadFileReq.file)
             Log.e(TAG, "Upload File Response: $response")
 
             val responseTime = response.raw().receivedResponseAtMillis
